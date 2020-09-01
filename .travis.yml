@@ -9,11 +9,11 @@ before_install:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
 script:
-    - docker build -t $DOCKER_USERNAME/api -f Dockerfile.prod ./api;
+    - docker build -t $DOCKER_USERNAME/api -f ./api/Dockerfile.prod ./api;
     - docker tag $DOCKER_USERNAME/api registry.heroku.com/$HEROKU_APP_BACKEND/web;
-    - docker build -t $DOCKER_USERNAME/frontend -f Dockerfile.prod ./frontend;
+    - docker build -t $DOCKER_USERNAME/frontend -f ./frontend/Dockerfile.prod ./frontend;
     - docker tag $DOCKER_USERNAME/frontend registry.heroku.com/$HEROKU_APP_FRONTEND/web;
-    - docker build -t $DOCKER_USERNAME/nginx -f Dockerfile.prod ./nginx;
+    - docker build -t $DOCKER_USERNAME/nginx -f ./nginx/Dockerfile.prod ./nginx;
     - docker tag $DOCKER_USERNAME/nginx registry.heroku.com/$HEROKU_APP_NGINX/web;
 deploy:
     provider: script
