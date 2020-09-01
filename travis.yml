@@ -1,0 +1,30 @@
+sudo: equired
+language: node_js
+node_js:
+    - "9"
+services:
+    - docker
+before_install:
+    - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
+script:
+    - docker build -t $DOCKER_USERNAME/api -f Dockerfile.prod ./api;
+    - docker tag $DOCKER_USERNAME/api registry.heroku.com/$HEROKU_APP_BACKEND/web;
+    - docker build -t $DOCKER_USERNAME/frontend -f Dockerfile.prod ./frontend;
+    - docker tag $DOCKER_USERNAME/frontend registry.heroku.com/$HEROKU_APP_FRONTEND/web;
+    - docker build -t $DOCKER_USERNAME/nginx -f Dockerfile.prod ./nginx;
+    - docker tag $DOCKER_USERNAME/nginx registry.heroku.com/$HEROKU_APP_NGINX/web;
+deploy:
+    provider: script
+    script:
+        - docker push $DOCKER_USERNAME/api;
+        - docker push registry.heroku.com/$HEROKU_APP_BACKEND/web;
+        - heroku container:release web --app $HEROKU_APP_BACKEND;
+        - docker push $DOCKER_USERNAME/frontend;
+        - docker push registry.heroku.com/$HEROKU_APP_FRONTEND/web;
+        - heroku container:release web --app $HEROKU_APP_FRONTEND;
+        - docker push $DOCKER_USERNAME/nginx;
+        - docker push registry.heroku.com/$HEROKU_APP_NGINX/web;
+        - heroku container:release web --app $HEROKU_APP_NGINX;
+    branch: master

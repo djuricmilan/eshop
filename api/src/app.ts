@@ -18,7 +18,7 @@ export class App{
     this.app.use(bodyParser.urlencoded({extended: true}));
 
     //configure routes
-    this.app.use('/api', router);
+    this.app.use('/', router);
     
   }
 }

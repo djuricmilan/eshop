@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+    db:
+        image: mysql:latest
+        env_file:
+            - ./db/db.env
+        volumes:
+            - ./db/mysql:/var/lib/mysql
+    api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile.dev
+        env_file:
+            - ./api/ormconfig-docker.env
+        volumes:
+            - /usr/app/node_modules
+            - ./api:/usr/app
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile.dev
+        volumes:
+            - /usr/app/node_modules
+            - ./frontend:/usr/app
+        env_file:
+            - ./frontend/docker.env.development
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile.dev
+        ports:
+            - 80:80
+        depends_on:
+            - frontend
+            - api
