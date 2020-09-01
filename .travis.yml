@@ -18,10 +18,9 @@ script:
 deploy:
     provider: script
     script:
+        - echo $HEROKU_APP_NGINX;
         - echo $HEROKU_APP_BACKEND;
         - echo $HEROKU_APP_FRONTEND;
-        - echo $HEROKU_APP_NGINX;
-
         - docker push $DOCKER_USERNAME/api;
         - docker push registry.heroku.com/$HEROKU_APP_BACKEND/web;
         - heroku container:release web --app $HEROKU_APP_BACKEND;
