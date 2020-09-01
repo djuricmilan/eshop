@@ -10,6 +10,5 @@ WORKDIR /usr/app
 COPY ./package.json ./
 RUN npm install --production
 COPY --from=builder /usr/app/dist dist
-COPY --from=builder /usr/app/ormconfig.js /dist/
 
 CMD [ "npm", "run", "start" ]
