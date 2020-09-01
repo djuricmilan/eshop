@@ -13,7 +13,7 @@ if(process.env.MYSQL_DATABASE_URL){
     url: process.env.MYSQL_DATABASE_URL,
     logging: true,
     synchronize: true,
-	  entities: ["./src/models/*.ts"]
+	  entities: ["./models/*.ts"]
   };
 }else{
   //local development(with docker or no docker)
