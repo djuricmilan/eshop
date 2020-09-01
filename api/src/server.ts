@@ -13,7 +13,7 @@ if(process.env.MYSQL_DATABASE_URL){
     url: process.env.MYSQL_DATABASE_URL,
     logging: true,
     synchronize: true,
-	  entities: ["./models/*.js"]
+	  entities: ["./dist/models/*.js"]
   };
 }else{
   //local development(with docker or no docker)
@@ -35,5 +35,5 @@ createConnection(options).then(() => {
   app.listen(PORT, () => {
     console.log(`App listening at port ${PORT}`);
   })
-});
+}).catch((error: any) => console.log(error));
 
