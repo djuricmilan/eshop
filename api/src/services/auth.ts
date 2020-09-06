@@ -7,6 +7,7 @@ import { Role } from "../models/role";
 import { validate } from "class-validator";
 import jsonwebtoken from 'jsonwebtoken';
 import { SECRET } from "../config/config";
+import { ShoppingCart } from "../models/ShoppingCart";
 
 class AuthenticationService{
   public async register(body: RegisterDto): Promise<CustomResponse>{
@@ -14,10 +15,11 @@ class AuthenticationService{
     body.role = Role.USER;
     let temp: User = new User();
     temp.initializeFromDto(body);
-
+    temp.shoppingCart = new ShoppingCart();
     const errors = await validate(temp);
     if(errors.length == 0){
       let user: User = await userRepository.save(temp);
+
       return{
         status: 200,
         success: true,

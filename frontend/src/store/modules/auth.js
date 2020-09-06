@@ -12,7 +12,8 @@ const getters = {
   getToken: (state) => state.token,
   getRole: (state) => state.role,
   getUsername: (state) => state.user.username,
-  takenUsernames: (state) => state.takenUsernames
+  takenUsernames: (state) => state.takenUsernames,
+  getUserId: (state) => state.user.id
 };
 
 const actions = {

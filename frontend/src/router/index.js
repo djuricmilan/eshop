@@ -95,7 +95,7 @@ router.beforeEach((to, from , next) => {
     }
   }
 
-  if(from.name == 'Home' && to.name != 'ProductDetails'){
+  if((from.name == 'Home' && to.name != 'ProductDetails') || to.name == 'Login'){
     //clear indexeddb cache
     store.commit('productView/_resetCachedProducts', null, {root: true});
   }

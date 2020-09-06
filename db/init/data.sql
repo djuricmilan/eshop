@@ -1,3 +1,5 @@
+use shop;
+
 insert into category values(1, 'Kategorija 1');
 insert into category values(2, 'Kategorija 2');
 insert into category values(3, 'Kategorija 3');

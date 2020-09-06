@@ -16,7 +16,7 @@
             type="number"
             :min="0"
             :max="product.availability"
-            
+            v-model="amount"
           >
           </v-text-field>
         </v-col>
@@ -25,6 +25,8 @@
             color="primary"
             v-bind="$utility.buttonSize($vuetify.breakpoint.name)"
             class="ml-n2"
+            @click="_addToCart()"
+            :disabled="amount==0"
           >
             Add to cart
           </v-btn>
@@ -35,11 +37,29 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default{
   name: 'ProductItem',
   props: [
     'product'
-  ]
+  ],
+  data: () => {
+    return{
+      amount: 0
+    };
+  },
+  methods: {
+    ...mapActions({
+      addToCart: 'shoppingCart/addToCart'
+    }),
+    _addToCart(){
+      let obj = {
+        productId: this.product.id,
+        amount: this.amount
+      }
+      this.addToCart(obj);
+    }
+  }
 }
 </script>
 

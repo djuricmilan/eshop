@@ -96,6 +96,7 @@ export default{
   },
   computed: {
     ...mapGetters({
+      getUserId: 'auth/getUserId',
       products: 'productView/getProducts',
       categories: 'productView/getCategories',
       quantity: 'productView/getQuantity',
@@ -162,11 +163,16 @@ export default{
   },
   created(){
     this.getMaxPrice().then(() => this.key += 1, null);
-    this.getProducts();
-    this.getCategories();
+    this.fetchShoppingCart(this.getUserId);
+    this.getCategories().then(
+      () => {
+        this.getProducts();
+      }
+    );
   },
   methods: {
     ...mapActions({
+      fetchShoppingCart: 'shoppingCart/fetchShoppingCart',
       getProducts: 'productView/getProducts',
       getCategories: 'productView/getCategories',
       getMaxPrice: 'productView/getMaxPrice'

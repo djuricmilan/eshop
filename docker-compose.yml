@@ -7,6 +7,7 @@ services:
             - ./db/db.env
         volumes:
             - ./db/mysql:/var/lib/mysql
+        restart: on-failure
     api:
         build:
             context: ./api
@@ -14,15 +15,16 @@ services:
         env_file:
             - ./api/ormconfig-docker.env
         volumes:
-            - /usr/app/node_modules
-            - ./api:/usr/app
+            - ./api/src:/usr/app/src
+        restart: on-failure
+        depends_on:
+            - db
     frontend:
         build:
             context: ./frontend
             dockerfile: Dockerfile.dev
         volumes:
-            - /usr/app/node_modules
-            - ./frontend:/usr/app
+            - ./frontend/src:/usr/app/src
         env_file:
             - ./frontend/docker.env.development
     nginx:

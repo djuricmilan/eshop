@@ -9,7 +9,8 @@ export interface CustomProductResponseLazy{
 }
 
 export interface CustomProductResponse{
-  success: boolean;
-  status: number;
-  products?: Product[]
+  success: boolean,
+  status: number,
+  products?: Product[],
+  message?: string
 }

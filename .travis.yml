@@ -1,4 +1,4 @@
-sudo: equired
+sudo: required
 language: node_js
 node_js:
     - "9"

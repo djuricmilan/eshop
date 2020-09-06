@@ -16,6 +16,13 @@ class ProductController{
     response.status(retval.status).send(retval);
   }
 
+  public async getOne(request: Request, response: Response){
+    const id = request.params.id;
+    console.log(id);
+    const retval: CustomProductResponse = await ProductService.getOne(id);
+    response.status(retval.status).send(retval);
+  }
+
   public async getMaxPrice(request: Request, response: Response){
     try{
       let retval = await ProductService.getMaxPrice();

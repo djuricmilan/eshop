@@ -1,4 +1,4 @@
-import { Entity, OneToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, OneToOne, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 import { User } from "./User";
 import { ProductItem } from "./ProductItem";
 import { ValidateNested } from "class-validator";
@@ -6,7 +6,10 @@ import { ValidateNested } from "class-validator";
 @Entity()
 export class ShoppingCart{
   //JoinColumn means that shoppngCart table will have userId as foreign key
-  @OneToOne(type => User, user => user.shippingAddress, {primary: true, onDelete: "CASCADE"})
+  @PrimaryColumn()
+  userId!: number;
+
+  @OneToOne(type => User, user => user.shippingAddress, {onDelete: "CASCADE"})
   @JoinColumn()
   user!: User;
 

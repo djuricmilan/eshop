@@ -11,6 +11,8 @@ const state = {
   maxPrice: Number.MAX_SAFE_INTEGER,
   amountOfChunks: 0,
 
+  selectedProduct: null,
+
   //for indexeddb
   cachedProducts: {
 
@@ -27,6 +29,7 @@ const getters = {
   getPriceRange: (state) => state.priceRange,
   getMaxPrice: (state) => state.maxPrice,
   getAmountOfChunks: (state) => state.amountOfChunks,
+  getSelectedProduct: (state) => state.selectedProduct,
   getCachedProducts: (state) => state.cachedProducts
 };
 
@@ -58,6 +61,20 @@ const actions = {
       return Promise.reject('Some error occurred...');
     }
   },
+  async fetchSelectedProduct({commit}, productId){
+    try{
+      const {success, message, products} = await productApi.getOne(productId);
+      if(success){
+        commit("setSelectedProduct", products[0]);
+      }else{
+        commit("setSelectedProduct", null);
+        return Promise.reject(message);
+      }
+    }catch(error){
+      commit("setSelectedProduct", null);
+      return Promise.reject(error);
+    }
+  },
   async getMaxPrice({commit}){
     try{
       const maxPrice = await productApi.getMaxPrice();
@@ -77,6 +94,7 @@ const mutations = {
   _amountOfChunks: (state, amountOfChunks) => state.amountOfChunks = amountOfChunks,
   _chunkIndex: (state, chunkIndex) => state.chunkIndex = chunkIndex,
   _cachedProducts: (state, {urlExtension, products}) => state.cachedProducts[urlExtension] = products,
+  setSelectedProduct: (state, selectedProduct) => state.selectedProduct = selectedProduct,
   _resetCachedProducts: (state) => state.cachedProducts = {}
 };
 

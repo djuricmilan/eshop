@@ -29,6 +29,25 @@ class ProductService{
     }
   }
 
+  async getOne(id: any): Promise<CustomProductResponse> {
+    const productRepository = getRepository(Product);
+    console.log(id);
+    try{
+      const product: Product = await productRepository.findOneOrFail(id);
+      return {
+        success: true,
+        status: 200,
+        products: [product]
+      };
+    }catch(error){
+      return {
+        success: false,
+        status: 404,
+        message: 'Product not found'
+      };
+    }
+  }
+
   public async getMaxPrice(): Promise<number>{
     const productRepository = getRepository(Product);
     try{
